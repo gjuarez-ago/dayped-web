@@ -47,15 +47,15 @@
 
     const pointer = { x: -999, y: -999, inside: false };
     const TOTAL = hasMouse ? 8 : 4;
-    // Tamaños (1 = 34px). Se reparten para que siempre haya chicas y grandes
-    const SIZES = [0.5, 0.65, 0.8, 1, 1.2, 1.45, 1.7];
+    // Tamaños (1 = 30px). Se reparten para que siempre haya chicas y grandes
+    const SIZES = [0.45, 0.55, 0.65, 0.75, 0.85, 1, 1.15];
     const bugs = Array.from({ length: TOTAL }, (_, i) => createBug(SIZES[i % SIZES.length]));
 
     function createBug(size) {
       const el = document.createElement('div');
       el.className = 'bug';
       el.innerHTML = ANT;
-      el.style.setProperty('--size', Math.round(34 * size) + 'px');
+      el.style.setProperty('--size', Math.round(30 * size) + 'px');
       layer.appendChild(el);
       const stride = 0.6 + size * 0.4;   // las grandes avanzan más por paso
       const b = { el, size, x: 0, y: 0, a: 0, pause: 0, state: 'walk',
@@ -261,7 +261,7 @@
         bug.className = 'card-bug';
         bug.innerHTML = ANT;
         bug.style.setProperty('--y', 25 + Math.random() * 50 + '%');
-        bug.style.setProperty('--size', [18, 24, 30, 38][Math.floor(Math.random() * 4)] + 'px');
+        bug.style.setProperty('--size', [14, 17, 20, 24][Math.floor(Math.random() * 4)] + 'px');
         img.appendChild(bug);
         setTimeout(() => { bug.remove(); busy = false; }, 1500);
       });

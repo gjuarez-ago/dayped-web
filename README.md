@@ -14,6 +14,10 @@ Sitio estático (HTML, CSS y JavaScript, sin frameworks).
 | `js/main.js` | Menú, WhatsApp, cobertura, formulario, loader |
 | `js/bichos.js` | Animaciones de hormigas, atomizador y hojas |
 | `assets/` | Logos e imágenes |
+| `assets/img/galeria/` | Galería "DAYPED en campo": `mini/` (miniaturas) y `grande/` (visor) |
+| `assets/img/redes/` | Piezas de marca de la sección "Síguenos en redes" |
+| `assets/img/proyectos/` | Fotos de "Trabajos realizados" |
+| `assets/fotos-corporativas/` | Fotos originales mejoradas (no se publican; de aquí salen las de arriba) |
 | `herramientas/` | Generador, datos de servicios y aviso de privacidad |
 
 ## Editar
@@ -30,14 +34,26 @@ node herramientas/generar-servicios.js
 
 Esto crea las páginas, `sitemap.xml`, `robots.txt` y la carpeta `publicar/` (lo que va en línea).
 
+## Validar SEO
+
+Después de editar contenido o servicios, ejecuta:
+
+```bash
+npm run build
+npm run test:seo
+```
+
+La validación revisa títulos, descripciones, H1, canonical, robots, Open Graph, JSON-LD, enlaces limpios y presencia de cada URL en el sitemap.
+
 ## Publicar en Cloudflare Pages
 
-Conecta este repositorio en **Workers & Pages → Create → Pages → Connect to Git** con:
+Proyecto: `dayped-web` (https://dayped-web.pages.dev). Para regenerar y subir en un paso:
 
-- **Build command:** `node herramientas/generar-servicios.js`
-- **Build output directory:** `publicar`
+```bash
+npm run deploy
+```
 
-Cada `git push` a `main` publica el sitio automáticamente.
+Requiere haber iniciado sesión en Cloudflare con `npx wrangler login`.
 
 ---
 Powered by [CMRG](https://cmrg.company)

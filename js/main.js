@@ -118,6 +118,107 @@ if (form) form.addEventListener('submit', (e) => {
   form.reset();
 });
 
+// ===== Galería en campo: filtros, "ver todas" y visor =====
+(() => {
+  const gallery = document.getElementById('gallery');
+  if (!gallery) return;
+
+  const INICIALES = 12; // fotos visibles en "Todos" antes de pulsar "Ver todas"
+  const items = [...gallery.querySelectorAll('.gallery__item')];
+  const filters = document.querySelectorAll('.gallery-filter');
+  const moreWrap = document.getElementById('galleryMore').parentElement;
+  let filtro = 'todos';
+  let expandida = false;
+
+  const render = () => {
+    const coinciden = items.filter(it => filtro === 'todos' || it.dataset.cat === filtro);
+    const limite = filtro === 'todos' && !expandida ? INICIALES : Infinity;
+    items.forEach(it => { it.hidden = true; });
+    coinciden.forEach((it, i) => { it.hidden = i >= limite; });
+    moreWrap.hidden = coinciden.length <= limite;
+  };
+
+  filters.forEach(btn => btn.addEventListener('click', () => {
+    filtro = btn.dataset.filter;
+    filters.forEach(b => {
+      const activo = b === btn;
+      b.classList.toggle('is-active', activo);
+      b.setAttribute('aria-pressed', activo);
+    });
+    render();
+  }));
+
+  document.getElementById('galleryMore').addEventListener('click', () => {
+    expandida = true;
+    render();
+  });
+
+  render();
+
+  // Visor
+  const box = document.getElementById('lightbox');
+  if (!box || typeof box.showModal !== 'function') return; // sin <dialog>: los enlaces abren la foto
+  const img = document.getElementById('lightboxImg');
+  const caption = document.getElementById('lightboxCaption');
+  const count = document.getElementById('lightboxCount');
+  let lista = [];
+  let actual = 0;
+
+  const mostrar = (i) => {
+    actual = (i + lista.length) % lista.length;
+    const link = lista[actual];
+    img.src = link.href;
+    img.alt = link.dataset.caption;
+    caption.textContent = link.dataset.caption;
+    count.textContent = `${actual + 1} / ${lista.length}`;
+  };
+
+  gallery.addEventListener('click', (e) => {
+    const link = e.target.closest('.gallery__link');
+    if (!link) return;
+    e.preventDefault();
+    lista = items.filter(it => !it.hidden).map(it => it.querySelector('.gallery__link'));
+    mostrar(lista.indexOf(link));
+    box.showModal();
+    document.documentElement.classList.add('has-lightbox');
+  });
+
+  const cerrar = () => box.close();
+  box.addEventListener('close', () => {
+    document.documentElement.classList.remove('has-lightbox');
+    img.src = '';
+  });
+  document.getElementById('lightboxClose').addEventListener('click', cerrar);
+  document.getElementById('lightboxPrev').addEventListener('click', () => mostrar(actual - 1));
+  document.getElementById('lightboxNext').addEventListener('click', () => mostrar(actual + 1));
+  box.addEventListener('click', (e) => { if (e.target === box) cerrar(); });
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    if (e.key === 'ArrowRight') mostrar(actual + 1);
+  });
+
+  // Deslizar con el dedo en móvil
+  let x0 = null;
+  box.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) mostrar(actual + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
+
+// ===== Carrusel de redes =====
+(() => {
+  const reel = document.getElementById('reel');
+  if (!reel) return;
+  document.querySelectorAll('[data-reel]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      reel.scrollBy({ left: Number(btn.dataset.reel) * reel.clientWidth * 0.9, behavior: 'smooth' });
+    });
+  });
+})();
+
 // ===== Año del footer =====
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();

@@ -47,7 +47,7 @@ module.exports = [
     slug: 'fumigacion-residencial-comercial',
     nombre: 'Fumigación residencial y comercial',
     titulo: 'Fumigación Residencial y Comercial',
-    icono: 'bug',
+    icono: 'spray',
     imagen: 'fumigacion-residencial-comercial.jpg',
     imagenAlt: 'Técnico fumigando el interior de una vivienda',
     descripcionMeta: 'Fumigación de casas y negocios en Manzanillo contra cucarachas, hormigas y plagas rastreras. Cotiza por WhatsApp.',
@@ -79,6 +79,43 @@ module.exports = [
       { q: '¿Trabajan fuera de horario para negocios?', a: 'Sí, podemos programar el servicio en el horario que menos afecte tu operación.' }
     ],
     otros: ['control-de-roedores', 'sanitizacion', 'mantenimiento-preventivo']
+  },
+  {
+    slug: 'control-de-mosquitos-y-dengue',
+    nombre: 'Control de mosquitos y dengue',
+    titulo: 'Control de Mosquitos y Dengue',
+    icono: 'drop',
+    imagen: 'mosquitos-dengue.jpg',
+    imagenAlt: 'Técnicos de DAYPED tomando muestras de agua en una pileta para detectar larvas de mosquito',
+    descripcionMeta: 'Control de mosquitos en Manzanillo: buscamos y eliminamos criaderos con muestreo de larvas y termonebulización. Prevención de dengue, zika y chikungunya.',
+    intro: 'No solo fumigamos: buscamos dónde nacen los mosquitos. Revisamos y muestreamos el agua estancada, eliminamos criaderos y termonebulizamos para bajar la población adulta.',
+    wa: 'Hola DAYPED, quiero cotizar control de mosquitos',
+    pasos: [
+      'Recorremos el lugar, ubicamos todo lo que junta agua (piletas, tambos, llantas, rejillas, canales) y tomamos muestras para confirmar dónde hay larvas.',
+      'Eliminamos o tratamos los criaderos y termonebulizamos patios, jardines e interiores para controlar a los mosquitos adultos.',
+      'Volvemos a revisar los puntos tratados para confirmar que ya no hay larvas.',
+      'Te dejamos indicaciones para que los criaderos no vuelvan, sobre todo en temporada de lluvias.'
+    ],
+    senales: [
+      'Muchos mosquitos al amanecer o al atardecer.',
+      'Agua estancada en tambos, piletas, llantas, cubetas o canaletas.',
+      'Casos de dengue en la colonia o entre tus trabajadores.',
+      'Terrenos con maleza, cacharros o drenaje pluvial cerca.'
+    ],
+    incluye: [
+      'Recorrido de inspección de criaderos',
+      'Muestreo de agua y revisión de larvas',
+      'Tratamiento o eliminación de criaderos',
+      'Termonebulización en exteriores e interiores',
+      'Recomendaciones preventivas por escrito'
+    ],
+    ideal: ['Casas y fraccionamientos', 'Escuelas', 'Hoteles', 'Patios y predios', 'Bodegas y patios de contenedores'],
+    faq: [
+      { q: '¿Por qué no basta con fumigar?', a: 'La fumigación elimina a los mosquitos adultos, pero si quedan criaderos, en pocos días nacen nuevos. Por eso revisamos y tratamos el agua donde ponen sus huevos.' },
+      { q: '¿Cuándo conviene hacerlo?', a: 'Antes y durante la temporada de lluvias, que es cuando más se reproducen. En lugares con agua almacenada conviene hacerlo de forma periódica.' },
+      { q: '¿Atienden terrenos grandes?', a: 'Sí. Contamos con equipo de termonebulización para predios, patios, áreas verdes y bodegas.' }
+    ],
+    otros: ['insectos-voladores', 'fumigacion-residencial-comercial', 'mantenimiento-preventivo']
   },
   {
     slug: 'control-de-roedores',
@@ -189,7 +226,7 @@ module.exports = [
       { q: '¿Cada cuánto se revisan?', a: 'Normalmente en cada visita programada; la frecuencia depende del tipo de instalación.' },
       { q: '¿Sirve para auditorías?', a: 'Sí, el registro de capturas forma parte de la evidencia que suelen pedir las auditorías sanitarias.' }
     ],
-    otros: ['sanitizacion', 'mantenimiento-preventivo', 'inspecciones-y-reportes']
+    otros: ['control-de-mosquitos-y-dengue', 'sanitizacion', 'mantenimiento-preventivo']
   },
   {
     slug: 'sanitizacion',

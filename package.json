@@ -1,0 +1,10 @@
+{
+  "name": "dayped-web",
+  "private": true,
+  "description": "Sitio web de DAYPED Control Ambiental",
+  "scripts": {
+    "build": "node herramientas/generar-servicios.js",
+    "test:seo": "node herramientas/validar-seo.js",
+    "deploy": "npm run build && npx wrangler@latest pages deploy publicar --project-name dayped-web --branch main --commit-dirty=true"
+  }
+}

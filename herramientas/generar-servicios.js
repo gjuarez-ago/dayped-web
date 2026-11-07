@@ -16,10 +16,10 @@ const servicios = require('./servicios-datos.js');
 const DOMINIO = 'https://dayped.cmrg.company'; // ← tu dominio final, sin "/" al final
 const WHATSAPP = '523141165262';
 // ← pon aquí los enlaces de tus redes (también cámbialos en index.html)
-const FACEBOOK = 'https://www.facebook.com/';
-const INSTAGRAM = 'https://www.instagram.com/';
-const TIKTOK = 'https://www.tiktok.com/';
-const YOUTUBE = 'https://www.youtube.com/';
+const FACEBOOK = 'https://www.facebook.com/profile.php?id=61595915657819';
+const INSTAGRAM = 'https://www.instagram.com/dayped_mzo/';
+const TIKTOK = 'https://www.tiktok.com/@dayped.mzo';
+const YOUTUBE = ''; // sin canal por ahora: vacío = no se muestra el botón
 
 // Reutiliza los iconos definidos en index.html (un solo lugar para editarlos)
 const index = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
@@ -29,14 +29,20 @@ const porSlug = Object.fromEntries(servicios.map(s => [s.slug, s]));
 const wa = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 const icon = (id, cls = '') => `<svg${cls ? ` class="${cls}"` : ''}><use href="#i-${id}"/></svg>`;
 
-const REDES = [FACEBOOK, INSTAGRAM, TIKTOK, YOUTUBE];
+const REDES = [FACEBOOK, INSTAGRAM, TIKTOK, YOUTUBE].filter(Boolean);
 const IMAGEN_COMPARTIR = `${DOMINIO}/assets/img/compartir-dayped.jpg`;
+const LOGO = `${DOMINIO}/assets/logo/icono-512.png`;
+const NOMBRE_SITIO = 'DAYPED Control Ambiental';
+const ID_NEGOCIO = `${DOMINIO}/#negocio`;
+const ID_SITIO = `${DOMINIO}/#sitio-web`;
+const ESTADOS_ATENDIDOS = ['Colima', 'Jalisco', 'Nayarit'];
 
 // Etiquetas comunes del <head>: canonical, vista previa al compartir e iconos.
 // `ruta` es la URL pública (Cloudflare quita el ".html"); `pre` el prefijo a la raíz.
 function etiquetasHead({ titulo, descripcion, ruta, pre }) {
   const url = DOMINIO + ruta;
   return `<link rel="canonical" href="${url}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="theme-color" content="#02213F">
 
   <!-- Vista previa al compartir (WhatsApp, Facebook, etc.) -->
@@ -47,9 +53,16 @@ function etiquetasHead({ titulo, descripcion, ruta, pre }) {
   <meta property="og:description" content="${descripcion}">
   <meta property="og:url" content="${url}">
   <meta property="og:image" content="${IMAGEN_COMPARTIR}">
+  <meta property="og:image:secure_url" content="${IMAGEN_COMPARTIR}">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DAYPED Control Ambiental, control profesional de plagas">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${titulo}">
+  <meta name="twitter:description" content="${descripcion}">
+  <meta name="twitter:image" content="${IMAGEN_COMPARTIR}">
+  <meta name="twitter:image:alt" content="DAYPED Control Ambiental, control profesional de plagas">
 
   <!-- Iconos -->
   <link rel="icon" href="${pre}assets/logo/icono.svg" type="image/svg+xml">
@@ -67,15 +80,64 @@ const PASOS = [
 
 function pagina(s) {
   const otros = s.otros.map(slug => porSlug[slug]).filter(Boolean);
+  const tituloSeo = `${s.titulo} en Manzanillo | DAYPED`;
+  const urlServicio = `${DOMINIO}/servicios/${s.slug}`;
+  const schemaServicio = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${urlServicio}#pagina`,
+        url: urlServicio,
+        name: tituloSeo,
+        description: s.descripcionMeta,
+        inLanguage: 'es-MX',
+        isPartOf: { '@id': ID_SITIO },
+        about: { '@id': `${urlServicio}#servicio` },
+        breadcrumb: { '@id': `${urlServicio}#migas` },
+        primaryImageOfPage: { '@type': 'ImageObject', url: `${DOMINIO}/assets/img/servicios/${s.imagen}` }
+      },
+      {
+        '@type': 'Service',
+        '@id': `${urlServicio}#servicio`,
+        name: s.titulo,
+        serviceType: s.nombre,
+        description: s.intro,
+        url: urlServicio,
+        image: `${DOMINIO}/assets/img/servicios/${s.imagen}`,
+        provider: { '@id': ID_NEGOCIO },
+        areaServed: ESTADOS_ATENDIDOS.map(name => ({ '@type': 'State', name }))
+      },
+      {
+        '@type': ['LocalBusiness', 'ProfessionalService'],
+        '@id': ID_NEGOCIO,
+        name: NOMBRE_SITIO,
+        url: `${DOMINIO}/`,
+        telephone: '+52 314 116 5262',
+        image: IMAGEN_COMPARTIR,
+        logo: LOGO,
+        address: { '@type': 'PostalAddress', addressLocality: 'Manzanillo', addressRegion: 'Colima', addressCountry: 'MX' }
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${urlServicio}#migas`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${DOMINIO}/` },
+          { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${DOMINIO}/#servicios` },
+          { '@type': 'ListItem', position: 3, name: s.nombre, item: urlServicio }
+        ]
+      }
+    ]
+  };
 
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${s.titulo} en Manzanillo | DAYPED Control Ambiental</title>
+  <title>${tituloSeo}</title>
   <meta name="description" content="${s.descripcionMeta}">
-  ${etiquetasHead({ titulo: `${s.titulo} en Manzanillo | DAYPED Control Ambiental`, descripcion: s.descripcionMeta, ruta: `/servicios/${s.slug}`, pre: '../' })}
+  ${etiquetasHead({ titulo: tituloSeo, descripcion: s.descripcionMeta, ruta: `/servicios/${s.slug}`, pre: '../' })}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,15 +147,7 @@ function pagina(s) {
   <script>document.documentElement.classList.add('js', 'is-loading');</script>
 
   <script type="application/ld+json">
-  ${JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: s.titulo,
-    description: s.intro,
-    url: `${DOMINIO}/servicios/${s.slug}`,
-    areaServed: ['Colima', 'Jalisco', 'Nayarit'],
-    provider: { '@type': 'LocalBusiness', name: 'DAYPED Control Ambiental', telephone: '+52 314 116 5262', url: DOMINIO + '/' }
-  })}
+  ${JSON.stringify(schemaServicio)}
   </script>
 </head>
 <body>
@@ -114,18 +168,19 @@ function pagina(s) {
   <!-- ================= HEADER ================= -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a href="../index.html" class="header__logo" aria-label="DAYPED Control Ambiental - Inicio">
+      <a href="../" class="header__logo" aria-label="DAYPED Control Ambiental - Inicio">
         <img src="../assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental">
       </a>
 
       <nav class="nav" id="nav" aria-label="Navegación principal">
         <ul class="nav__list">
-          <li><a href="../index.html" class="nav__link">Inicio</a></li>
-          <li><a href="../index.html#servicios" class="nav__link is-active">Servicios</a></li>
-          <li><a href="../index.html#paquetes" class="nav__link">Paquetes</a></li>
-          <li><a href="../index.html#cobertura" class="nav__link">Cobertura</a></li>
-          <li><a href="../index.html#nosotros" class="nav__link">Nosotros</a></li>
-          <li><a href="../index.html#contacto" class="nav__link">Contacto</a></li>
+          <li><a href="../" class="nav__link">Inicio</a></li>
+          <li><a href="../#servicios" class="nav__link is-active">Servicios</a></li>
+          <li><a href="../#paquetes" class="nav__link">Paquetes</a></li>
+          <li><a href="../#galeria" class="nav__link">Galería</a></li>
+          <li><a href="../#cobertura" class="nav__link">Cobertura</a></li>
+          <li><a href="../#nosotros" class="nav__link">Nosotros</a></li>
+          <li><a href="../#contacto" class="nav__link">Contacto</a></li>
         </ul>
         <a href="${wa(s.wa)}" class="btn btn--primary nav__cta" target="_blank" rel="noopener">Cotizar</a>
       </nav>
@@ -144,11 +199,11 @@ function pagina(s) {
       </div>
       <div class="container svc-hero__inner">
         <nav class="breadcrumb" aria-label="Ruta de navegación">
-          <a href="../index.html">Inicio</a><span>/</span><a href="../index.html#servicios">Servicios</a><span>/</span><strong>${s.nombre}</strong>
+          <a href="../">Inicio</a><span>/</span><a href="../#servicios">Servicios</a><span>/</span><strong>${s.nombre}</strong>
         </nav>
         <div class="svc-hero__head">
           <span class="svc-hero__icon">${icon(s.icono)}</span>
-          <h1 class="svc-hero__title">${s.titulo}</h1>
+          <h1 class="svc-hero__title">${s.titulo} en Manzanillo</h1>
         </div>
         <p class="svc-hero__text">${s.intro}</p>
         <div class="hero__actions">
@@ -233,7 +288,7 @@ ${s.faq.map((f, i) => `          <details class="faq__item"${i === 0 ? ' open' :
           <h2 class="section-title">Otros servicios</h2>
         </header>
         <div class="services services--3">
-${otros.map(o => `          <a class="service reveal" href="${o.slug}.html">
+${otros.map(o => `          <a class="service reveal" href="${o.slug}">
             <span class="service__icon">${icon(o.icono)}</span>
             <span class="service__body"><strong class="service__title">${o.nombre}</strong></span>
             <span class="service__img"><img src="../assets/img/servicios/${o.imagen}" alt="" loading="lazy"></span>
@@ -254,18 +309,18 @@ ${otros.map(o => `          <a class="service reveal" href="${o.slug}.html">
           <a href="${FACEBOOK}" class="social__link social__link--fb" target="_blank" rel="noopener" aria-label="DAYPED en Facebook"><svg><use href="#i-facebook"/></svg></a>
           <a href="${INSTAGRAM}" class="social__link social__link--ig" target="_blank" rel="noopener" aria-label="DAYPED en Instagram"><svg><use href="#i-instagram"/></svg></a>
           <a href="${TIKTOK}" class="social__link social__link--tt" target="_blank" rel="noopener" aria-label="DAYPED en TikTok"><svg><use href="#i-tiktok"/></svg></a>
-          <a href="${YOUTUBE}" class="social__link social__link--yt" target="_blank" rel="noopener" aria-label="DAYPED en YouTube"><svg><use href="#i-youtube"/></svg></a>
-        </div>
+${YOUTUBE ? `          <a href="${YOUTUBE}" class="social__link social__link--yt" target="_blank" rel="noopener" aria-label="DAYPED en YouTube"><svg><use href="#i-youtube"/></svg></a>
+` : ''}        </div>
       </div>
       <div class="footer__col">
         <h3>Enlaces</h3>
         <ul>
-          <li><a href="../index.html">Inicio</a></li>
-          <li><a href="../index.html#servicios">Servicios</a></li>
-          <li><a href="../index.html#paquetes">Paquetes</a></li>
-          <li><a href="../index.html#cobertura">Cobertura</a></li>
-          <li><a href="../index.html#nosotros">Nosotros</a></li>
-          <li><a href="../index.html#contacto">Contacto</a></li>
+          <li><a href="../">Inicio</a></li>
+          <li><a href="../#servicios">Servicios</a></li>
+          <li><a href="../#paquetes">Paquetes</a></li>
+          <li><a href="../#cobertura">Cobertura</a></li>
+          <li><a href="../#nosotros">Nosotros</a></li>
+          <li><a href="../#contacto">Contacto</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -277,7 +332,7 @@ ${otros.map(o => `          <a class="service reveal" href="${o.slug}.html">
         </ul>
       </div>
     </div>
-    <p class="footer__copy">© <span id="year">2026</span> DAYPED Control Ambiental. Todos los derechos reservados. · <a href="../legal/aviso-de-privacidad.html">Aviso de privacidad</a> · <span class="footer__credit">Powered by <a href="https://cmrg.company" target="_blank" rel="noopener">CMRG</a></span></p>
+    <p class="footer__copy">© <span id="year">2026</span> DAYPED Control Ambiental. Todos los derechos reservados. · <a href="../legal/aviso-de-privacidad">Aviso de privacidad</a> · <span class="footer__credit">Powered by <a href="https://cmrg.company" target="_blank" rel="noopener">CMRG</a></span></p>
   </footer>
 
   <a href="${wa(s.wa)}" class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
@@ -305,13 +360,14 @@ console.log(`\n${servicios.length} páginas de servicio generadas.`);
 const contenidoAviso = fs.readFileSync(path.join(__dirname, 'aviso-privacidad.html'), 'utf8')
   .replace(/<!--[\s\S]*?-->\s*/, '');
 const base = servicios[0];
-const headBase = etiquetasHead({ titulo: `${base.titulo} en Manzanillo | DAYPED Control Ambiental`, descripcion: base.descripcionMeta, ruta: `/servicios/${base.slug}`, pre: '../' });
+const headBase = etiquetasHead({ titulo: `${base.titulo} en Manzanillo | DAYPED`, descripcion: base.descripcionMeta, ruta: `/servicios/${base.slug}`, pre: '../' });
 if (!pagina(base).includes(headBase)) throw new Error('No encontré las etiquetas del head para reemplazar');
 
 const aviso = pagina(base)
   .replace(headBase, () => etiquetasHead({ titulo: 'Aviso de privacidad | DAYPED Control Ambiental', descripcion: 'Aviso de privacidad de DAYPED Control Ambiental.', ruta: '/legal/aviso-de-privacidad', pre: '../' }))
   .replace(/<title>[\s\S]*?<\/title>/, '<title>Aviso de privacidad | DAYPED Control Ambiental</title>')
-  .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Aviso de privacidad de DAYPED Control Ambiental.">\n  <meta name="robots" content="noindex">')
+  .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Aviso de privacidad de DAYPED Control Ambiental.">')
+  .replace('<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">', '<meta name="robots" content="noindex, follow">')
   .replace(/\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/, '')
   .replace(/<main>[\s\S]*<\/main>/, () => '<main>\n' + contenidoAviso + '  </main>')
   .replace('class="nav__link is-active">Servicios', 'class="nav__link">Servicios')
@@ -353,8 +409,6 @@ const pagina404 = pagina(base)
   .replace('class="nav__link is-active">Servicios', 'class="nav__link">Servicios')
   .replace('edita herramientas/servicios-datos.js', 'edita herramientas/generar-servicios.js')
   .split(wa(base.wa)).join(wa('Hola DAYPED, quiero una cotización'))
-  .split('"../index.html#').join('"/#')
-  .split('"../index.html"').join('"/"')
   .split('"../').join('"/');
 
 fs.writeFileSync(path.join(RAIZ, '404.html'), pagina404, 'utf8');
@@ -364,32 +418,64 @@ console.log('✔ 404.html');
 // index.html: etiquetas SEO entre <!-- SEO:inicio --> y <!-- SEO:fin -->
 // ---------------------------------------------------------
 const rutaIndex = path.join(RAIZ, 'index.html');
+const perfilesSociales = REDES.filter(u => !/^https:\/\/www\.[a-z]+\.com\/$/.test(u));
 const negocio = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'DAYPED Control Ambiental',
-  description: 'Control ambiental y de plagas: fumigación, sanitización y prevención para hogares, negocios e industria en Colima, Jalisco y Nayarit.',
-  url: DOMINIO + '/',
-  image: IMAGEN_COMPARTIR,
-  logo: `${DOMINIO}/assets/logo/icono-512.png`,
+  '@type': ['LocalBusiness', 'ProfessionalService'],
+  '@id': ID_NEGOCIO,
+  name: NOMBRE_SITIO,
+  alternateName: 'DAYPED',
+  description: 'Empresa de control de plagas y fumigación para hogares, negocios e industria en Colima, Jalisco y Nayarit.',
+  url: `${DOMINIO}/`,
+  image: [IMAGEN_COMPARTIR],
+  logo: { '@type': 'ImageObject', url: LOGO, width: 512, height: 512 },
   telephone: '+52 314 116 5262',
   email: 'contacto@cmrg.company',
   address: { '@type': 'PostalAddress', addressLocality: 'Manzanillo', addressRegion: 'Colima', addressCountry: 'MX' },
-  areaServed: ['Colima', 'Jalisco', 'Nayarit'].map(name => ({ '@type': 'State', name })),
-  // Solo se incluyen las redes que ya tienen el enlace de tu perfil
-  sameAs: REDES.filter(u => !/^https:\/\/www\.[a-z]+\.com\/$/.test(u))
+  areaServed: ESTADOS_ATENDIDOS.map(name => ({ '@type': 'State', name })),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+52 314 116 5262',
+    contactType: 'customer service',
+    areaServed: 'MX',
+    availableLanguage: ['es']
+  },
+  knowsAbout: ['Control de plagas', 'Fumigación', 'Control de roedores', 'Control de termitas', 'Sanitización', 'Manejo integrado de plagas'],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios de control ambiental y de plagas',
+    itemListElement: servicios.map(s => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.titulo, url: `${DOMINIO}/servicios/${s.slug}` }
+    }))
+  }
 };
-if (!negocio.sameAs.length) delete negocio.sameAs;
+if (perfilesSociales.length) negocio.sameAs = perfilesSociales;
+
+const schemaIndex = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': ID_SITIO,
+      url: `${DOMINIO}/`,
+      name: NOMBRE_SITIO,
+      alternateName: 'DAYPED',
+      inLanguage: 'es-MX',
+      publisher: { '@id': ID_NEGOCIO }
+    },
+    negocio
+  ]
+};
 
 const seoIndex = `<!-- SEO:inicio (generado: edita herramientas/generar-servicios.js) -->
   ${etiquetasHead({
-    titulo: 'DAYPED Control Ambiental | Control de plagas en Manzanillo y el Pacífico',
-    descripcion: 'Fumigación, sanitización y prevención para hogares, negocios e industria. Desde Manzanillo a Colima, Jalisco y Nayarit.',
+    titulo: 'Control de plagas y fumigación en Manzanillo | DAYPED',
+    descripcion: 'Empresa de control de plagas en Manzanillo. Fumigación, control de roedores, termitas y sanitización para hogares, negocios e industria.',
     ruta: '/',
     pre: ''
   })}
   <script type="application/ld+json">
-  ${JSON.stringify(negocio)}
+  ${JSON.stringify(schemaIndex)}
   </script>
   <!-- SEO:fin -->`;
 
@@ -402,10 +488,20 @@ console.log('✔ index.html (etiquetas SEO)');
 // sitemap.xml, robots.txt, site.webmanifest y _headers (Cloudflare)
 // ---------------------------------------------------------
 const hoy = new Date().toISOString().slice(0, 10);
-const urls = ['/', ...servicios.map(s => `/servicios/${s.slug}`)];
+const urls = [
+  { ruta: '/', imagen: '/assets/img/compartir-dayped.jpg', titulo: 'DAYPED Control Ambiental' },
+  ...servicios.map(s => ({ ruta: `/servicios/${s.slug}`, imagen: `/assets/img/servicios/${s.imagen}`, titulo: s.titulo }))
+];
 fs.writeFileSync(path.join(RAIZ, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `  <url><loc>${DOMINIO}${u}</loc><lastmod>${hoy}</lastmod></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls.map(u => `  <url>
+    <loc>${DOMINIO}${u.ruta}</loc>
+    <lastmod>${hoy}</lastmod>
+    <image:image>
+      <image:loc>${DOMINIO}${u.imagen}</image:loc>
+      <image:title>${u.titulo}</image:title>
+    </image:image>
+  </url>`).join('\n')}
 </urlset>
 `);
 
@@ -445,7 +541,13 @@ console.log('✔ sitemap.xml, robots.txt, site.webmanifest, _headers');
 // sin fotos originales PNG ni imágenes que no se usan)
 // ---------------------------------------------------------
 const PUBLICAR = path.join(RAIZ, 'publicar');
-fs.rmSync(PUBLICAR, { recursive: true, force: true });
+try {
+  fs.rmSync(PUBLICAR, { recursive: true, force: true });
+} catch (error) {
+  if (error.code !== 'EPERM' && error.code !== 'EBUSY') throw error;
+  console.warn('⚠ /publicar está en uso; se actualizará sin eliminar la carpeta.');
+}
+fs.mkdirSync(PUBLICAR, { recursive: true });
 const archivos = ['index.html', '404.html', 'sitemap.xml', 'robots.txt', 'site.webmanifest', '_headers'];
 const carpetas = ['css', 'js', 'servicios', 'legal', 'assets/logo', 'assets/img'];
 for (const a of archivos) fs.cpSync(path.join(RAIZ, a), path.join(PUBLICAR, a));
