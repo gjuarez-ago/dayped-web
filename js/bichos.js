@@ -25,12 +25,18 @@
     <path d="M4 20 15 9" stroke="#4A9B18" stroke-width="1.6" stroke-linecap="round"/>
   </svg>`;
 
-  const hero = document.querySelector('.hero');
-  if (hero) initHero(hero);
-  if (hasMouse) {
-    initLeafTrail();
-    initCardBugs();
-  }
+  // Arranca cuando la página ya cargó y el navegador está libre (no compite con la carga)
+  const start = () => {
+    const hero = document.querySelector('.hero');
+    if (hero) initHero(hero);
+    if (hasMouse) {
+      initLeafTrail();
+      initCardBugs();
+    }
+  };
+  const idle = window.requestIdleCallback || (fn => setTimeout(fn, 200));
+  if (document.readyState === 'complete') idle(start);
+  else addEventListener('load', () => idle(start), { once: true });
 
   // -------------------------------------------------------
   // 1 + 2. Hormigas del hero + atomizador
@@ -131,8 +137,9 @@
         }
 
         b.el.style.transform = `translate(${b.x}px, ${b.y}px) rotate(${b.a + Math.PI / 2}rad)`;
-        b.el.classList.toggle('is-walking', speed > 0);
-        b.el.classList.toggle('is-running', b.state === 'flee');
+        const walking = speed > 0, fleeing = b.state === 'flee';
+        if (walking !== b.walking) { b.walking = walking; b.el.classList.toggle('is-walking', walking); }
+        if (fleeing !== b.fleeing) { b.fleeing = fleeing; b.el.classList.toggle('is-running', fleeing); }
       }
       if (running) requestAnimationFrame(tick);
     }

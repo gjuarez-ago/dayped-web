@@ -13,22 +13,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap"></noscript>
 
   <link rel="stylesheet" href="/css/styles.css">
-  <script>document.documentElement.classList.add('js', 'is-loading');</script>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-
-  <!-- ================= LOADER ================= -->
-  <div class="loader" id="loader" role="status" aria-live="polite">
-    <div class="loader__inner">
-      <img class="loader__logo" src="/assets/logo/logo-compacto.svg" alt="DAYPED">
-      <div class="loader__bar"><span></span></div>
-      <p class="loader__text">Control Ambiental</p>
-      <span class="sr-only">Cargando…</span>
-    </div>
-  </div>
   <!-- PÁGINA GENERADA AUTOMÁTICAMENTE: edita herramientas/generar-servicios.js y vuelve a generar -->
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -85,7 +76,7 @@
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="/" class="header__logo" aria-label="DAYPED Control Ambiental - Inicio">
-        <img src="/assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental">
+        <img src="/assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="180" height="60">
       </a>
 
       <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -125,7 +116,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <img src="/assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" loading="lazy">
+        <img src="/assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="210" height="70" loading="lazy" decoding="async">
         <p>Control ambiental y de plagas en Colima, Jalisco y Nayarit.</p>
         <div class="social">
           <a href="https://www.facebook.com/profile.php?id=61595915657819" class="social__link social__link--fb" target="_blank" rel="noopener" aria-label="DAYPED en Facebook"><svg><use href="#i-facebook"/></svg></a>

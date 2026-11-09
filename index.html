@@ -41,22 +41,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap"></noscript>
 
   <link rel="stylesheet" href="css/styles.css">
-  <script>document.documentElement.classList.add('js', 'is-loading');</script>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-
-  <!-- ================= LOADER ================= -->
-  <div class="loader" id="loader" role="status" aria-live="polite">
-    <div class="loader__inner">
-      <img class="loader__logo" src="assets/logo/logo-compacto.svg" alt="DAYPED">
-      <div class="loader__bar"><span></span></div>
-      <p class="loader__text">Control Ambiental</p>
-      <span class="sr-only">Cargando…</span>
-    </div>
-  </div>
 
   <!-- ================= ICONOS (se usan con <use href="#i-nombre">) ================= -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -113,7 +104,7 @@
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="#inicio" class="header__logo" aria-label="DAYPED Control Ambiental - Inicio">
-        <img src="assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental">
+        <img src="assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="180" height="60">
       </a>
 
       <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -180,7 +171,7 @@
               <strong class="service__title">Control de mosquitos y dengue</strong>
               <span class="service__desc">Buscamos y eliminamos criaderos con muestreo de agua, y termonebulizamos patios, predios e interiores.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/mosquitos-dengue.jpg" alt="Técnicos de DAYPED tomando muestras de agua en una pileta" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/mosquitos-dengue.jpg" alt="Técnicos de DAYPED tomando muestras de agua en una pileta" width="900" height="673" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -190,7 +181,7 @@
               <strong class="service__title">Fumigación residencial y comercial</strong>
               <span class="service__desc">Cucarachas, hormigas y plagas rastreras en casas y negocios.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="Técnico fumigando el interior de una vivienda" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="Técnico fumigando el interior de una vivienda" width="632" height="561" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -200,7 +191,7 @@
               <strong class="service__title">Control de roedores</strong>
               <span class="service__desc">Estaciones de cebado, trampeo y monitoreo de ratas y ratones.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/roedores.jpg" alt="Técnica colocando estación de control de roedores en un almacén" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/roedores.jpg" alt="Técnica colocando estación de control de roedores en un almacén" width="840" height="561" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -210,7 +201,7 @@
               <strong class="service__title">Termitas y plagas de la madera</strong>
               <span class="service__desc">Tratamiento de estructuras, muebles y madera dañada.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/termitas-madera.jpg" alt="Técnico aplicando tratamiento contra termitas en madera" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/termitas-madera.jpg" alt="Técnico aplicando tratamiento contra termitas en madera" width="900" height="900" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -220,7 +211,7 @@
               <strong class="service__title">Chinches y arácnidos</strong>
               <span class="service__desc">Inspección de colchones, muebles y zonas de descanso.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/chinches-aracnidos.jpg" alt="Técnica inspeccionando un colchón en busca de chinches" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/chinches-aracnidos.jpg" alt="Técnica inspeccionando un colchón en busca de chinches" width="800" height="600" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -230,7 +221,7 @@
               <strong class="service__title">Monitoreo de insectos voladores</strong>
               <span class="service__desc">Lámparas y trampas para moscas y mosquitos en áreas críticas.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/insectos-voladores.jpg" alt="Técnico revisando una lámpara atrapainsectos" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/insectos-voladores.jpg" alt="Técnico revisando una lámpara atrapainsectos" width="900" height="789" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -240,7 +231,7 @@
               <strong class="service__title">Sanitización de espacios</strong>
               <span class="service__desc">Desinfección de áreas comunes, oficinas y comedores.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/sanitizacion.jpg" alt="Técnico sanitizando un comedor" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/sanitizacion.jpg" alt="Técnico sanitizando un comedor" width="900" height="506" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -250,7 +241,7 @@
               <strong class="service__title">Exclusión y prevención</strong>
               <span class="service__desc">Sellado de accesos para que las plagas no vuelvan a entrar.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/exclusion-prevencion.jpg" alt="Técnico sellando una entrada en el exterior de un edificio" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/exclusion-prevencion.jpg" alt="Técnico sellando una entrada en el exterior de un edificio" width="554" height="554" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -260,7 +251,7 @@
               <strong class="service__title">Inspecciones y reportes técnicos</strong>
               <span class="service__desc">Diagnóstico documentado para auditorías y certificaciones.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/inspecciones-reportes.jpg" alt="Inspección técnica en instalación industrial" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/inspecciones-reportes.jpg" alt="Inspección técnica en instalación industrial" width="387" height="516" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -270,7 +261,7 @@
               <strong class="service__title">Mantenimiento preventivo</strong>
               <span class="service__desc">Visitas programadas para mantener tu espacio protegido.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/mantenimiento-preventivo.jpg" alt="Revisión preventiva en cocina de restaurante" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/mantenimiento-preventivo.jpg" alt="Revisión preventiva en cocina de restaurante" width="900" height="600" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -280,7 +271,7 @@
               <strong class="service__title">Industrial y logístico</strong>
               <span class="service__desc">Bodegas, almacenes, patios y operaciones portuarias.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/industrial-logistico.jpg" alt="Técnico inspeccionando una bodega industrial" loading="lazy"></span>
+            <span class="service__img"><img src="assets/img/servicios/industrial-logistico.jpg" alt="Técnico inspeccionando una bodega industrial" width="614" height="410" loading="lazy" decoding="async"></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
         </div>
@@ -460,7 +451,7 @@
             <a href="#galeria" class="why__link">Ve cómo trabajamos en campo <svg><use href="#i-arrow"/></svg></a>
           </div>
           <div class="why__media reveal">
-            <img src="assets/img/nosotros/camioneta-dayped.jpg" width="763" height="1024" alt="Camioneta de servicio DAYPED en Manzanillo" loading="lazy">
+            <img src="assets/img/nosotros/camioneta-dayped.jpg" width="763" height="1024" alt="Camioneta de servicio DAYPED en Manzanillo" loading="lazy" decoding="async">
           </div>
         </div>
       </div>
@@ -476,22 +467,22 @@
 
         <div class="projects">
           <figure class="project project--main reveal">
-            <img src="assets/img/proyectos/predio-termonebulizacion.jpg" width="1204" height="520" alt="Técnico de DAYPED termonebulizando un patio de vehículos de servicio" loading="lazy">
+            <img src="assets/img/proyectos/predio-termonebulizacion.jpg" width="1204" height="520" alt="Técnico de DAYPED termonebulizando un patio de vehículos de servicio" loading="lazy" decoding="async">
             <figcaption>
               <strong>Termonebulización en patios, predios y flotillas</strong>
               <span><svg><use href="#i-shield"/></svg>Control de mosquitos y plagas en exteriores</span>
             </figcaption>
           </figure>
           <figure class="project reveal">
-            <img src="assets/img/proyectos/comercio-alimentos.jpg" width="700" height="930" alt="Fumigación con motomochila en una carnicería" loading="lazy">
+            <img src="assets/img/proyectos/comercio-alimentos.jpg" width="700" height="930" alt="Fumigación con motomochila en una carnicería" loading="lazy" decoding="async">
             <figcaption><strong>Comercios de alimentos</strong></figcaption>
           </figure>
           <figure class="project reveal">
-            <img src="assets/img/proyectos/bodega-patio.jpg" width="700" height="930" alt="Técnico aplicando tratamiento en el patio de una bodega" loading="lazy">
+            <img src="assets/img/proyectos/bodega-patio.jpg" width="700" height="930" alt="Técnico aplicando tratamiento en el patio de una bodega" loading="lazy" decoding="async">
             <figcaption><strong>Bodegas y patios de servicio</strong></figcaption>
           </figure>
           <figure class="project reveal">
-            <img src="assets/img/proyectos/monitoreo-criaderos.jpg" width="700" height="930" alt="Técnicos tomando muestras de agua en piletas" loading="lazy">
+            <img src="assets/img/proyectos/monitoreo-criaderos.jpg" width="700" height="930" alt="Técnicos tomando muestras de agua en piletas" loading="lazy" decoding="async">
             <figcaption><strong>Monitoreo de criaderos</strong></figcaption>
           </figure>
         </div>
@@ -735,7 +726,8 @@
 
       <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
         <figure class="lightbox__figure">
-          <img class="lightbox__img" id="lightboxImg" src="" alt="">
+          <span class="lightbox__spinner" aria-hidden="true"></span>
+          <img class="lightbox__img" id="lightboxImg" alt="">
           <figcaption class="lightbox__caption"><span id="lightboxCaption"></span><b id="lightboxCount"></b></figcaption>
         </figure>
         <button type="button" class="lightbox__btn lightbox__close" id="lightboxClose" aria-label="Cerrar">&times;</button>
@@ -812,7 +804,7 @@
     <section class="section section--soft" id="nosotros">
       <div class="container about">
         <div class="about__media reveal">
-          <img src="assets/img/nosotros/tecnico-fumigando-vertical.jpg" width="763" height="1024" alt="Técnico de DAYPED aplicando tratamiento en exterior" loading="lazy">
+          <img src="assets/img/nosotros/tecnico-fumigando-vertical.jpg" width="763" height="1024" alt="Técnico de DAYPED aplicando tratamiento en exterior" loading="lazy" decoding="async">
           <div class="about__stat"><strong>3</strong><span>años protegiendo<br>el Pacífico</span></div>
         </div>
 
@@ -853,7 +845,7 @@
         <div class="tips">
           <article class="tip reveal">
             <div class="tip__img">
-              <img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="" loading="lazy">
+              <img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="" width="632" height="561" loading="lazy" decoding="async">
               <span class="tag">Prevención</span>
             </div>
             <details class="tip__body">
@@ -869,7 +861,7 @@
 
           <article class="tip reveal">
             <div class="tip__img">
-              <img src="assets/img/servicios/roedores.jpg" alt="" loading="lazy">
+              <img src="assets/img/servicios/roedores.jpg" alt="" width="840" height="561" loading="lazy" decoding="async">
               <span class="tag">Roedores</span>
             </div>
             <details class="tip__body">
@@ -885,7 +877,7 @@
 
           <article class="tip reveal">
             <div class="tip__img">
-              <img src="assets/img/servicios/termitas-madera.jpg" alt="" loading="lazy">
+              <img src="assets/img/servicios/termitas-madera.jpg" alt="" width="900" height="900" loading="lazy" decoding="async">
               <span class="tag">Termitas</span>
             </div>
             <details class="tip__body">
@@ -1008,15 +1000,15 @@
           <form class="form reveal" id="contactForm" novalidate>
             <label class="field">
               <svg><use href="#i-user"/></svg>
-              <input type="text" name="nombre" placeholder="Nombre" required autocomplete="name">
+              <input type="text" name="nombre" placeholder="Nombre" aria-label="Nombre" required autocomplete="name">
             </label>
             <label class="field">
               <svg><use href="#i-phone"/></svg>
-              <input type="tel" name="telefono" placeholder="Teléfono" required autocomplete="tel" pattern="[0-9\s()+-]{10,}">
+              <input type="tel" name="telefono" placeholder="Teléfono" aria-label="Teléfono" required autocomplete="tel" pattern="[0-9\s()+-]{10,}">
             </label>
             <label class="field">
               <svg><use href="#i-clipboard"/></svg>
-              <select name="servicio" required>
+              <select name="servicio" required aria-label="Tipo de servicio">
                 <option value="" disabled selected>Tipo de servicio</option>
                 <option>Control de mosquitos y dengue</option>
                 <option>Fumigación residencial y comercial</option>
@@ -1037,7 +1029,7 @@
             </label>
             <label class="field field--area">
               <svg><use href="#i-message"/></svg>
-              <textarea name="mensaje" rows="4" placeholder="Mensaje (zona, tipo de plaga, tamaño del lugar…)"></textarea>
+              <textarea name="mensaje" aria-label="Mensaje" rows="4" placeholder="Mensaje (zona, tipo de plaga, tamaño del lugar…)"></textarea>
             </label>
             <p class="form__privacy">Al enviar tu solicitud aceptas nuestro <a href="legal/aviso-de-privacidad">Aviso de privacidad</a>.</p>
             <p class="form__error" id="formError" role="alert"></p>
@@ -1081,7 +1073,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <img src="assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" loading="lazy">
+        <img src="assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="210" height="70" loading="lazy" decoding="async">
         <p>Control ambiental y de plagas en Colima, Jalisco y Nayarit.</p>
         <div class="social">
           <a href="https://www.facebook.com/profile.php?id=61595915657819" class="social__link social__link--fb" target="_blank" rel="noopener" aria-label="DAYPED en Facebook"><svg><use href="#i-facebook"/></svg></a>

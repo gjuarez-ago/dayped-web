@@ -25,6 +25,18 @@ const YOUTUBE = ''; // sin canal por ahora: vacío = no se muestra el botón
 const index = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
 const sprite = index.match(/<svg width="0" height="0"[\s\S]*?<\/defs>\s*<\/svg>/)[0];
 
+// Ancho y alto reales de una foto de servicio (JPEG), para width/height y evitar saltos de diseño
+function medidas(archivo) {
+  const b = fs.readFileSync(path.join(RAIZ, 'assets/img/servicios', archivo));
+  for (let i = 2; i < b.length;) {
+    if (b[i] !== 0xFF) { i++; continue; }
+    const m = b[i + 1];
+    if (m >= 0xC0 && m <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(m)) return `width="${b.readUInt16BE(i + 7)}" height="${b.readUInt16BE(i + 5)}"`;
+    i += 2 + b.readUInt16BE(i + 2);
+  }
+  return '';
+}
+
 const porSlug = Object.fromEntries(servicios.map(s => [s.slug, s]));
 const wa = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 const icon = (id, cls = '') => `<svg${cls ? ` class="${cls}"` : ''}><use href="#i-${id}"/></svg>`;
@@ -141,26 +153,17 @@ function pagina(s) {
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap"></noscript>
 
   <link rel="stylesheet" href="../css/styles.css">
-  <script>document.documentElement.classList.add('js', 'is-loading');</script>
+  <script>document.documentElement.classList.add('js');</script>
 
   <script type="application/ld+json">
   ${JSON.stringify(schemaServicio)}
   </script>
 </head>
 <body>
-
-  <!-- ================= LOADER ================= -->
-  <div class="loader" id="loader" role="status" aria-live="polite">
-    <div class="loader__inner">
-      <img class="loader__logo" src="../assets/logo/logo-compacto.svg" alt="DAYPED">
-      <div class="loader__bar"><span></span></div>
-      <p class="loader__text">Control Ambiental</p>
-      <span class="sr-only">Cargando…</span>
-    </div>
-  </div>
   <!-- PÁGINA GENERADA AUTOMÁTICAMENTE: edita herramientas/servicios-datos.js y vuelve a generar -->
 
   ${sprite}
@@ -169,7 +172,7 @@ function pagina(s) {
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="../" class="header__logo" aria-label="DAYPED Control Ambiental - Inicio">
-        <img src="../assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental">
+        <img src="../assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="180" height="60">
       </a>
 
       <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -195,7 +198,7 @@ function pagina(s) {
     <!-- ================= HERO DEL SERVICIO ================= -->
     <section class="svc-hero">
       <div class="svc-hero__media" aria-hidden="true">
-        <img src="../assets/img/servicios/${s.imagen}" alt="">
+        <img src="../assets/img/servicios/${s.imagen}" alt="" ${medidas(s.imagen)} fetchpriority="high">
       </div>
       <div class="container svc-hero__inner">
         <nav class="breadcrumb" aria-label="Ruta de navegación">
@@ -213,7 +216,7 @@ function pagina(s) {
           <a href="#proceso" class="btn btn--outline btn--lg">Cómo trabajamos</a>
         </div>
       </div>
-      <img class="svc-hero__photo-mobile" src="../assets/img/servicios/${s.imagen}" alt="${s.imagenAlt}">
+      <img class="svc-hero__photo-mobile" src="../assets/img/servicios/${s.imagen}" alt="${s.imagenAlt}" ${medidas(s.imagen)} fetchpriority="high">
     </section>
 
     <!-- ================= PROCESO ================= -->
@@ -291,7 +294,7 @@ ${s.faq.map((f, i) => `          <details class="faq__item"${i === 0 ? ' open' :
 ${otros.map(o => `          <a class="service reveal" href="${o.slug}">
             <span class="service__icon">${icon(o.icono)}</span>
             <span class="service__body"><strong class="service__title">${o.nombre}</strong></span>
-            <span class="service__img"><img src="../assets/img/servicios/${o.imagen}" alt="" loading="lazy"></span>
+            <span class="service__img"><img src="../assets/img/servicios/${o.imagen}" alt="" ${medidas(o.imagen)} loading="lazy" decoding="async"></span>
             ${icon('chevron', 'service__arrow')}
           </a>`).join('\n')}
         </div>
@@ -303,7 +306,7 @@ ${otros.map(o => `          <a class="service reveal" href="${o.slug}">
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <img src="../assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" loading="lazy">
+        <img src="../assets/logo/logo-horizontal.svg" alt="DAYPED Control Ambiental" width="210" height="70" loading="lazy" decoding="async">
         <p>Control ambiental y de plagas en Colima, Jalisco y Nayarit.</p>
         <div class="social">
           <a href="${FACEBOOK}" class="social__link social__link--fb" target="_blank" rel="noopener" aria-label="DAYPED en Facebook"><svg><use href="#i-facebook"/></svg></a>
@@ -524,7 +527,7 @@ fs.writeFileSync(path.join(RAIZ, 'site.webmanifest'), JSON.stringify({
   ]
 }, null, 2) + '\n');
 
-// Cabeceras de Cloudflare Pages: seguridad básica + caché de imágenes (1 semana)
+// Cabeceras de Cloudflare Pages: seguridad básica + caché (imágenes 30 días, CSS/JS 1 día)
 fs.writeFileSync(path.join(RAIZ, '_headers'), `/*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
@@ -532,7 +535,13 @@ fs.writeFileSync(path.join(RAIZ, '_headers'), `/*
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 /assets/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/css/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/js/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 `);
 console.log('✔ sitemap.xml, robots.txt, site.webmanifest, _headers');
 

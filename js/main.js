@@ -57,6 +57,18 @@ const revealObserver = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+// ===== Carga de imágenes: brillo mientras carga y aparición suave =====
+document.querySelectorAll('main img:not([fetchpriority])').forEach(img => { // las fotos principales no se animan (LCP)
+  if (img.complete && img.naturalWidth) return; // ya estaba en caché
+  img.classList.add('img-pending');
+  const listo = () => {
+    img.classList.remove('img-pending');
+    img.classList.add('img-loaded');
+  };
+  img.addEventListener('load', listo, { once: true });
+  img.addEventListener('error', () => img.classList.remove('img-pending'), { once: true });
+});
+
 // ===== Cobertura: cambiar el mapa según la zona =====
 const map = document.getElementById('coverageMap');
 const showOnMap = (lugar, zoom) => {
@@ -164,13 +176,27 @@ if (form) form.addEventListener('submit', (e) => {
   let lista = [];
   let actual = 0;
 
+  const precargadas = new Set();
+  const precargar = (i) => {
+    const link = lista[(i + lista.length) % lista.length];
+    if (!link || precargadas.has(link.href)) return;
+    precargadas.add(link.href);
+    new Image().src = link.href;
+  };
+
   const mostrar = (i) => {
     actual = (i + lista.length) % lista.length;
     const link = lista[actual];
+    box.classList.add('is-loading');
+    img.onload = () => box.classList.remove('is-loading');
+    img.onerror = () => box.classList.remove('is-loading');
     img.src = link.href;
+    if (img.complete && img.naturalWidth) box.classList.remove('is-loading');
     img.alt = link.dataset.caption;
     caption.textContent = link.dataset.caption;
     count.textContent = `${actual + 1} / ${lista.length}`;
+    precargar(actual + 1);
+    precargar(actual - 1);
   };
 
   gallery.addEventListener('click', (e) => {
@@ -186,7 +212,9 @@ if (form) form.addEventListener('submit', (e) => {
   const cerrar = () => box.close();
   box.addEventListener('close', () => {
     document.documentElement.classList.remove('has-lightbox');
-    img.src = '';
+    img.onload = img.onerror = null;
+    img.removeAttribute('src');
+    box.classList.remove('is-loading');
   });
   document.getElementById('lightboxClose').addEventListener('click', cerrar);
   document.getElementById('lightboxPrev').addEventListener('click', () => mostrar(actual - 1));
@@ -223,27 +251,3 @@ if (form) form.addEventListener('submit', (e) => {
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
-// ===== Loader =====
-(() => {
-  const loader = document.getElementById('loader');
-  if (!loader) return;
-
-  const MIN_MS = 900;   // tiempo mínimo visible (evita parpadeo)
-  const MAX_MS = 6000;  // por si alguna imagen tarda demasiado
-  let done = false;
-
-  const hide = () => {
-    if (done) return;
-    done = true;
-    const wait = Math.max(0, MIN_MS - performance.now());
-    setTimeout(() => {
-      loader.classList.add('is-hidden');
-      document.documentElement.classList.remove('is-loading');
-      setTimeout(() => loader.remove(), 700);
-    }, wait);
-  };
-
-  if (document.readyState === 'complete') hide();
-  else window.addEventListener('load', hide);
-  setTimeout(hide, MAX_MS);
-})();
