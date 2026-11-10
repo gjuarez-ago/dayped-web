@@ -44,6 +44,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap"></noscript>
 
+  <link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/hero/hero-tecnico-fumigando-640.webp 640w, assets/img/hero/hero-tecnico-fumigando-960.webp 960w, assets/img/hero/hero-tecnico-fumigando-1280.webp 1280w, assets/img/hero/hero-tecnico-fumigando-1774.webp 1774w" imagesizes="(max-width: 960px) 100vw, 62vw" fetchpriority="high">
   <link rel="stylesheet" href="css/styles.css">
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -130,7 +131,7 @@
     <!-- ================= 1. HERO ================= -->
     <section class="hero" id="inicio">
       <div class="hero__media" aria-hidden="true">
-        <img src="assets/img/hero/hero-tecnico-fumigando.jpg" alt="" width="1774" height="887" fetchpriority="high">
+        <picture class="pic"><source type="image/webp" srcset="assets/img/hero/hero-tecnico-fumigando-640.webp 640w, assets/img/hero/hero-tecnico-fumigando-960.webp 960w, assets/img/hero/hero-tecnico-fumigando-1280.webp 1280w, assets/img/hero/hero-tecnico-fumigando-1774.webp 1774w" sizes="(max-width: 960px) 100vw, 62vw"><img src="assets/img/hero/hero-tecnico-fumigando.jpg" alt="" width="1774" height="887" fetchpriority="high"></picture>
       </div>
 
       <div class="container hero__inner">
@@ -171,7 +172,7 @@
               <strong class="service__title">Control de mosquitos y dengue</strong>
               <span class="service__desc">Buscamos y eliminamos criaderos con muestreo de agua, y termonebulizamos patios, predios e interiores.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/mosquitos-dengue.jpg" alt="Técnicos de DAYPED tomando muestras de agua en una pileta" width="900" height="673" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/mosquitos-dengue-480.webp 480w, assets/img/servicios/mosquitos-dengue-900.webp 900w" sizes="(max-width: 960px) 46vw, 540px"><img src="assets/img/servicios/mosquitos-dengue.jpg" alt="Técnicos de DAYPED tomando muestras de agua en una pileta" width="900" height="673" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -181,7 +182,7 @@
               <strong class="service__title">Fumigación residencial y comercial</strong>
               <span class="service__desc">Cucarachas, hormigas y plagas rastreras en casas y negocios.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="Técnico fumigando el interior de una vivienda" width="632" height="561" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/fumigacion-residencial-comercial-480.webp 480w, assets/img/servicios/fumigacion-residencial-comercial-632.webp 632w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/fumigacion-residencial-comercial.jpg" alt="Técnico fumigando el interior de una vivienda" width="632" height="561" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -191,7 +192,7 @@
               <strong class="service__title">Control de roedores</strong>
               <span class="service__desc">Estaciones de cebado, trampeo y monitoreo de ratas y ratones.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/roedores.jpg" alt="Técnica colocando estación de control de roedores en un almacén" width="840" height="561" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/roedores-480.webp 480w, assets/img/servicios/roedores-840.webp 840w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/roedores.jpg" alt="Técnica colocando estación de control de roedores en un almacén" width="840" height="561" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -201,7 +202,7 @@
               <strong class="service__title">Termitas y plagas de la madera</strong>
               <span class="service__desc">Tratamiento de estructuras, muebles y madera dañada.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/termitas-madera.jpg" alt="Técnico aplicando tratamiento contra termitas en madera" width="900" height="900" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/termitas-madera-480.webp 480w, assets/img/servicios/termitas-madera-900.webp 900w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/termitas-madera.jpg" alt="Técnico aplicando tratamiento contra termitas en madera" width="900" height="900" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -211,7 +212,7 @@
               <strong class="service__title">Chinches y arácnidos</strong>
               <span class="service__desc">Inspección de colchones, muebles y zonas de descanso.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/chinches-aracnidos.jpg" alt="Técnica inspeccionando un colchón en busca de chinches" width="800" height="600" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/chinches-aracnidos-480.webp 480w, assets/img/servicios/chinches-aracnidos-800.webp 800w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/chinches-aracnidos.jpg" alt="Técnica inspeccionando un colchón en busca de chinches" width="800" height="600" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -221,7 +222,7 @@
               <strong class="service__title">Monitoreo de insectos voladores</strong>
               <span class="service__desc">Lámparas y trampas para moscas y mosquitos en áreas críticas.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/insectos-voladores.jpg" alt="Técnico revisando una lámpara atrapainsectos" width="900" height="789" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/insectos-voladores-480.webp 480w, assets/img/servicios/insectos-voladores-900.webp 900w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/insectos-voladores.jpg" alt="Técnico revisando una lámpara atrapainsectos" width="900" height="789" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -231,7 +232,7 @@
               <strong class="service__title">Sanitización de espacios</strong>
               <span class="service__desc">Desinfección de áreas comunes, oficinas y comedores.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/sanitizacion.jpg" alt="Técnico sanitizando un comedor" width="900" height="506" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/sanitizacion-480.webp 480w, assets/img/servicios/sanitizacion-900.webp 900w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/sanitizacion.jpg" alt="Técnico sanitizando un comedor" width="900" height="506" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -241,7 +242,7 @@
               <strong class="service__title">Exclusión y prevención</strong>
               <span class="service__desc">Sellado de accesos para que las plagas no vuelvan a entrar.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/exclusion-prevencion.jpg" alt="Técnico sellando una entrada en el exterior de un edificio" width="554" height="554" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/exclusion-prevencion-480.webp 480w, assets/img/servicios/exclusion-prevencion-554.webp 554w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/exclusion-prevencion.jpg" alt="Técnico sellando una entrada en el exterior de un edificio" width="554" height="554" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -251,7 +252,7 @@
               <strong class="service__title">Inspecciones y reportes técnicos</strong>
               <span class="service__desc">Diagnóstico documentado para auditorías y certificaciones.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/inspecciones-reportes.jpg" alt="Inspección técnica en instalación industrial" width="387" height="516" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/inspecciones-reportes-387.webp 387w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/inspecciones-reportes.jpg" alt="Inspección técnica en instalación industrial" width="387" height="516" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -261,7 +262,7 @@
               <strong class="service__title">Mantenimiento preventivo</strong>
               <span class="service__desc">Visitas programadas para mantener tu espacio protegido.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/mantenimiento-preventivo.jpg" alt="Revisión preventiva en cocina de restaurante" width="900" height="600" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/mantenimiento-preventivo-480.webp 480w, assets/img/servicios/mantenimiento-preventivo-900.webp 900w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/mantenimiento-preventivo.jpg" alt="Revisión preventiva en cocina de restaurante" width="900" height="600" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
 
@@ -271,7 +272,7 @@
               <strong class="service__title">Industrial y logístico</strong>
               <span class="service__desc">Bodegas, almacenes, patios y operaciones portuarias.</span>
             </span>
-            <span class="service__img"><img src="assets/img/servicios/industrial-logistico.jpg" alt="Técnico inspeccionando una bodega industrial" width="614" height="410" loading="lazy" decoding="async"></span>
+            <span class="service__img"><picture class="pic"><source type="image/webp" srcset="assets/img/servicios/industrial-logistico-480.webp 480w, assets/img/servicios/industrial-logistico-614.webp 614w" sizes="(max-width: 960px) 36vw, 220px"><img src="assets/img/servicios/industrial-logistico.jpg" alt="Técnico inspeccionando una bodega industrial" width="614" height="410" loading="lazy" decoding="async"></picture></span>
             <svg class="service__arrow"><use href="#i-chevron"/></svg>
           </a>
         </div>

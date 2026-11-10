@@ -37,7 +37,19 @@ function medidas(archivo) {
   return '';
 }
 
-const porSlug = Object.fromEntries(servicios.map(s => [s.slug, s]));
+// srcset de las variantes WebP (foto-480.webp, foto-900.webp…) generadas junto a cada JPEG
+function webp(archivo, sizes) {
+  const base = archivo.replace(/\.jpg$/, '');
+  const anchos = fs.readdirSync(path.join(RAIZ, 'assets/img/servicios'))
+    .filter(n => n.startsWith(base + '-') && n.endsWith('.webp'))
+    .map(n => +n.slice(base.length + 1, -5)).filter(Boolean).sort((a, b) => a - b);
+  if (!anchos.length) return '';
+  return `<source type="image/webp" srcset="${anchos.map(w => `../assets/img/servicios/${base}-${w}.webp ${w}w`).join(', ')}" sizes="${sizes}">`;
+}
+// Envuelve un <img> en <picture> con su fuente WebP
+const conWebp = (archivo, sizes, img) => `<picture class="pic">${webp(archivo, sizes)}${img}</picture>`;
+
+const porSlug =Object.fromEntries(servicios.map(s => [s.slug, s]));
 const wa = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 const icon = (id, cls = '') => `<svg${cls ? ` class="${cls}"` : ''}><use href="#i-${id}"/></svg>`;
 
@@ -198,7 +210,7 @@ function pagina(s) {
     <!-- ================= HERO DEL SERVICIO ================= -->
     <section class="svc-hero">
       <div class="svc-hero__media" aria-hidden="true">
-        <img src="../assets/img/servicios/${s.imagen}" alt="" ${medidas(s.imagen)} fetchpriority="high">
+        ${conWebp(s.imagen, '(max-width: 960px) 100vw, 50vw', `<img src="../assets/img/servicios/${s.imagen}" alt="" ${medidas(s.imagen)} fetchpriority="high">`)}
       </div>
       <div class="container svc-hero__inner">
         <nav class="breadcrumb" aria-label="Ruta de navegación">
@@ -216,7 +228,7 @@ function pagina(s) {
           <a href="#proceso" class="btn btn--outline btn--lg">Cómo trabajamos</a>
         </div>
       </div>
-      <img class="svc-hero__photo-mobile" src="../assets/img/servicios/${s.imagen}" alt="${s.imagenAlt}" ${medidas(s.imagen)} fetchpriority="high">
+      ${conWebp(s.imagen, '(max-width: 960px) 100vw, 50vw', `<img class="svc-hero__photo-mobile" src="../assets/img/servicios/${s.imagen}" alt="${s.imagenAlt}" ${medidas(s.imagen)} fetchpriority="high">`)}
     </section>
 
     <!-- ================= PROCESO ================= -->
@@ -294,7 +306,7 @@ ${s.faq.map((f, i) => `          <details class="faq__item"${i === 0 ? ' open' :
 ${otros.map(o => `          <a class="service reveal" href="${o.slug}">
             <span class="service__icon">${icon(o.icono)}</span>
             <span class="service__body"><strong class="service__title">${o.nombre}</strong></span>
-            <span class="service__img"><img src="../assets/img/servicios/${o.imagen}" alt="" ${medidas(o.imagen)} loading="lazy" decoding="async"></span>
+            <span class="service__img">${conWebp(o.imagen, '(max-width: 960px) 36vw, 220px', `<img src="../assets/img/servicios/${o.imagen}" alt="" ${medidas(o.imagen)} loading="lazy" decoding="async">`)}</span>
             ${icon('chevron', 'service__arrow')}
           </a>`).join('\n')}
         </div>
