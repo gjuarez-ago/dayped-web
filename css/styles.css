@@ -770,6 +770,9 @@ img.img-loaded { animation: aparecer .6s ease both; }
   gap: 18px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  /* = padding lateral: así el snap inicial coincide con la posición 0 y el
+     navegador no desplaza el carrusel al cargar (eso cancelaba la medición de LCP) */
+  scroll-padding-inline: 2px;
   scroll-behavior: smooth;
   padding: 6px 2px 18px;
   scrollbar-width: thin;
