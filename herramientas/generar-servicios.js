@@ -566,6 +566,19 @@ for (const c of carpetas) {
     filter: f => !(c === 'assets/img' && f.endsWith('.png'))
   });
 }
+
+// Versiona CSS y JS (?v=huella del contenido) en las páginas publicadas: cada cambio
+// usa una URL nueva y ni la caché de Cloudflare ni la del navegador sirven la versión vieja
+const huella = (rel) => require('crypto').createHash('sha1').update(fs.readFileSync(path.join(RAIZ, rel))).digest('hex').slice(0, 8);
+const versiones = Object.fromEntries(['css/styles.css', 'js/main.js', 'js/bichos.js'].map(r => [r, huella(r)]));
+const paginasHtml = (dir) => fs.readdirSync(dir, { withFileTypes: true })
+  .flatMap(e => e.isDirectory() ? paginasHtml(path.join(dir, e.name)) : e.name.endsWith('.html') ? [path.join(dir, e.name)] : []);
+for (const f of paginasHtml(PUBLICAR)) {
+  let html = fs.readFileSync(f, 'utf8');
+  for (const [r, v] of Object.entries(versiones)) html = html.split(`${r}"`).join(`${r}?v=${v}"`);
+  fs.writeFileSync(f, html, 'utf8');
+}
+
 const pesoTotal = (dir) => fs.readdirSync(dir, { withFileTypes: true })
   .reduce((t, e) => t + (e.isDirectory() ? pesoTotal(path.join(dir, e.name)) : fs.statSync(path.join(dir, e.name)).size), 0);
 console.log(`✔ publicar/ lista para Cloudflare Pages (${(pesoTotal(PUBLICAR) / 1048576).toFixed(1)} MB)`);
