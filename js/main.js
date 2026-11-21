@@ -1,14 +1,44 @@
 // ===== Configuración =====
-const WHATSAPP = '523141165262'; // 52 + número a 10 dígitos
+// Grupo de WhatsApp donde caen las cotizaciones (también en herramientas/generar-servicios.js)
+const WHATSAPP_GRUPO = 'https://chat.whatsapp.com/KXq7rb4edar0QxGvnvPlyE';
 
-const waLink = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
+// Un enlace de grupo no admite mensaje prellenado: copiamos el texto al portapapeles
+// y avisamos al visitante para que lo pegue al entrar al grupo.
+const copiar = async (texto) => {
+  try { await navigator.clipboard.writeText(texto); return true; } catch { }
+  try {
+    const t = Object.assign(document.createElement('textarea'), { value: texto });
+    t.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(t); t.select();
+    const ok = document.execCommand('copy'); t.remove(); return ok;
+  } catch { return false; }
+};
+
+let toastTimer;
+const avisar = (msg) => {
+  let t = document.getElementById('waToast');
+  if (!t) {
+    t = Object.assign(document.createElement('div'), { id: 'waToast', className: 'wa-toast' });
+    t.setAttribute('role', 'status');
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('is-visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('is-visible'), 6000);
+};
+
+const copiarYAvisar = async (texto) => avisar(await copiar(texto)
+  ? 'Copiamos tu mensaje: pégalo en el grupo de WhatsApp para cotizar.'
+  : 'Entra al grupo de WhatsApp y escríbenos tu solicitud.');
 
 // ===== Enlaces de WhatsApp =====
-// Cualquier elemento con data-wa="mensaje" abre WhatsApp con ese mensaje.
+// Cualquier elemento con data-wa="mensaje" abre el grupo (por su href) y copia ese mensaje.
 document.querySelectorAll('[data-wa]').forEach(el => {
-  el.href = waLink(el.dataset.wa);
+  el.href = WHATSAPP_GRUPO;
   el.target = '_blank';
   el.rel = 'noopener';
+  el.addEventListener('click', () => copiarYAvisar(el.dataset.wa));
 });
 
 // ===== Menú móvil =====
@@ -100,7 +130,7 @@ if (map) {
   });
 }
 
-// ===== Formulario de contacto → WhatsApp =====
+// ===== Formulario de contacto → grupo de WhatsApp (mensaje copiado) =====
 const form = document.getElementById('contactForm');
 const formError = document.getElementById('formError');
 
@@ -126,7 +156,8 @@ if (form) form.addEventListener('submit', (e) => {
     mensaje.value.trim() ? `Mensaje: ${mensaje.value.trim()}` : ''
   ].filter(Boolean).join('\n');
 
-  window.open(waLink(texto), '_blank', 'noopener');
+  copiarYAvisar(texto); // primero: el portapapeles requiere el gesto del usuario
+  window.open(WHATSAPP_GRUPO, '_blank', 'noopener');
   form.reset();
 });
 

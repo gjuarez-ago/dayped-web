@@ -14,7 +14,8 @@ const RAIZ = path.join(__dirname, '..');
 const SALIDA = path.join(RAIZ, 'servicios');
 const servicios = require('./servicios-datos.js');
 const DOMINIO = 'https://dayped.cmrg.company'; // ← tu dominio final, sin "/" al final
-const WHATSAPP = '523141165262';
+// Grupo de WhatsApp donde caen las cotizaciones (también en js/main.js)
+const WHATSAPP_GRUPO = 'https://chat.whatsapp.com/KXq7rb4edar0QxGvnvPlyE';
 // ← pon aquí los enlaces de tus redes (también cámbialos en index.html)
 const FACEBOOK = 'https://www.facebook.com/profile.php?id=61595915657819';
 const INSTAGRAM = 'https://www.instagram.com/dayped_mzo/';
@@ -50,7 +51,8 @@ function webp(archivo, sizes) {
 const conWebp = (archivo, sizes, img) => `<picture class="pic">${webp(archivo, sizes)}${img}</picture>`;
 
 const porSlug =Object.fromEntries(servicios.map(s => [s.slug, s]));
-const wa = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
+// Enlace al grupo; data-wa guarda el mensaje sugerido que main.js copia al portapapeles
+const wa = (texto) => `href="${WHATSAPP_GRUPO}" data-wa="${texto.replace(/"/g, '&quot;')}"`;
 const icon = (id, cls = '') => `<svg${cls ? ` class="${cls}"` : ''}><use href="#i-${id}"/></svg>`;
 
 const REDES = [FACEBOOK, INSTAGRAM, TIKTOK, YOUTUBE].filter(Boolean);
@@ -197,7 +199,7 @@ function pagina(s) {
           <li><a href="../#nosotros" class="nav__link">Nosotros</a></li>
           <li><a href="../#contacto" class="nav__link">Contacto</a></li>
         </ul>
-        <a href="${wa(s.wa)}" class="btn btn--primary nav__cta" target="_blank" rel="noopener">Cotizar</a>
+        <a ${wa(s.wa)} class="btn btn--primary nav__cta" target="_blank" rel="noopener">Cotizar</a>
       </nav>
 
       <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
@@ -222,7 +224,7 @@ function pagina(s) {
         </div>
         <p class="svc-hero__text">${s.intro}</p>
         <div class="hero__actions">
-          <a href="${wa(s.wa)}" class="btn btn--green btn--lg" target="_blank" rel="noopener">
+          <a ${wa(s.wa)} class="btn btn--green btn--lg" target="_blank" rel="noopener">
             ${icon('whatsapp', 'btn__icon')} Solicitar tratamiento
           </a>
           <a href="#proceso" class="btn btn--outline btn--lg">Cómo trabajamos</a>
@@ -290,7 +292,7 @@ ${s.faq.map((f, i) => `          <details class="faq__item"${i === 0 ? ' open' :
           <h2>¿Listo para resolverlo?</h2>
           <p>Cuéntanos tu caso y te enviamos tu cotización.</p>
         </div>
-        <a href="${wa(s.wa)}" class="btn btn--green btn--lg" target="_blank" rel="noopener">
+        <a ${wa(s.wa)} class="btn btn--green btn--lg" target="_blank" rel="noopener">
           Solicitar tratamiento ${icon('arrow', 'btn__icon btn__icon--sm')}
         </a>
       </div>
@@ -341,7 +343,7 @@ ${YOUTUBE ? `          <a href="${YOUTUBE}" class="social__link social__link--yt
       <div class="footer__col">
         <h3>Contacto</h3>
         <ul class="footer__contact">
-          <li>${icon('whatsapp')}<a href="${wa('Hola DAYPED, quiero una cotización')}" target="_blank" rel="noopener">314 116 5262</a></li>
+          <li>${icon('whatsapp')}<a ${wa('Hola DAYPED, quiero una cotización')} target="_blank" rel="noopener">Grupo de cotizaciones</a></li>
           <li>${icon('mail')}<a href="mailto:contacto@cmrg.company">contacto@cmrg.company</a></li>
           <li>${icon('pin')}Manzanillo, Colima</li>
         </ul>
@@ -350,7 +352,7 @@ ${YOUTUBE ? `          <a href="${YOUTUBE}" class="social__link social__link--yt
     <p class="footer__copy">© <span id="year">2026</span> DAYPED Control Ambiental. Todos los derechos reservados. · <a href="../legal/aviso-de-privacidad">Aviso de privacidad</a> · <span class="footer__credit">Powered by <a href="https://cmrg.company" target="_blank" rel="noopener">CMRG</a></span></p>
   </footer>
 
-  <a href="${wa(s.wa)}" class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <a ${wa(s.wa)} class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
     ${icon('whatsapp')}
   </a>
 
